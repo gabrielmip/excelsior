@@ -1,19 +1,20 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const path = require('path')
+const path = require('path');
+const sveltePreprocess = require('svelte-preprocess');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const mode = process.env.NODE_ENV || 'development'
-const prod = mode === 'production'
-const dev = !prod
+const mode = process.env.NODE_ENV || 'development';
+const prod = mode === 'production';
+const dev = !prod;
 
 module.exports = {
   entry: {
-    bundle: ['./src/main.js'],
+    bundle: ['./src/main.ts'],
   },
   resolve: {
     alias: {
       svelte: path.resolve('node_modules', 'svelte'),
     },
-    extensions: ['.mjs', '.js', '.svelte'],
+    extensions: ['.mjs', '.js', '.svelte', '.ts'],
     mainFields: ['svelte', 'browser', 'module', 'main'],
   },
   output: {
@@ -25,23 +26,16 @@ module.exports = {
     rules: [
       {
         test: /\.svelte$/,
+        exclude: /node_modules/,
         use: {
           loader: 'svelte-loader-hot',
           options: {
             dev,
             hotReload: true,
+            preprocess: sveltePreprocess({}),
             hotOptions: {
-              // whether to preserve local state (i.e. any `let` variable) or
-              // only public props (i.e. `export let ...`)
-              noPreserveState: false,
-              // optimistic will try to recover from runtime errors happening
-              // during component init. This goes funky when your components are
-              // not pure enough.
+              noPreserveState: false, // let variables too or only public props
               optimistic: true,
-
-              // See docs of svelte-loader-hot for all available options:
-              //
-              // https://github.com/rixo/svelte-loader-hot#usage
             },
           },
         },
@@ -49,13 +43,14 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          /**
-           * MiniCssExtractPlugin doesn't support HMR.
-           * For developing, use 'style-loader' instead.
-           * */
-          prod ? MiniCssExtractPlugin.loader : 'style-loader',
+          prod ? MiniCssExtractPlugin.loader : 'style-loader', // no HMR in MiniCssExtractPlugin
           'css-loader',
         ],
+      },
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
     ],
   },
@@ -70,5 +65,13 @@ module.exports = {
     contentBase: 'public',
     hot: true,
     overlay: true,
+    stats: {
+      hash: false,
+      version: false,
+      timings: false,
+      assets: false,
+      chunks: false,
+      modules: false,
+    },
   },
-}
+};

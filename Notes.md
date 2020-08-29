@@ -1,7 +1,3 @@
-# Tasks of the day
-
-- [ ]
-
 # Ideias
 
 - Number selector jumps if the user presses Ctrl
@@ -10,7 +6,10 @@
 - Autocomplete in formulas
 - Undo
 - Draw formulas instead of rendering them as text allowing interactions such as hovering in a literal and highlighting it everywhere in the workspace.
+- Export to Excel
+- Registering Interests
+- Literals which vary over time
 
 # Quick reference
 
-- https://mathjs.org/docs/expressions/expression_trees.html
+- [MathJS' expression trees](https://mathjs.org/docs/expressions/expression_trees.html)
