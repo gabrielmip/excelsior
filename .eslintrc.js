@@ -21,9 +21,11 @@ module.exports = {
   'plugins': [
     '@typescript-eslint',
     'svelte3',
+    'prettier',
   ],
   'rules': {
-    'max-len': ['error', {code: 100}],
+    'max-len': ['error', { code: 100 }],
     'require-jsdoc': ['off'],
+    'no-unused-vars': ['off'], // it is going crazy with imported types
   },
 };
