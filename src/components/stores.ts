@@ -2,6 +2,7 @@ import { writable } from "svelte/store";
 import type { Expression, Identifier } from "../logic/parser";
 import { parseUserInput, getDefaultExpression } from "../logic/parser";
 import { assignEvaluations } from "../logic/scopeCalculator";
+import { getFromStorage, saveToStorage } from "../services/localStorage";
 
 export interface WorkspaceItem {
   expression: Expression;
@@ -12,30 +13,37 @@ export type Workspace = Map<Identifier, WorkspaceItem>;
 
 function createWorkspace() {
   const getEmptyWorkspace = () => new Map<Identifier, WorkspaceItem>();
-  const { set, subscribe, update } = writable(getEmptyWorkspace());
+  const { set, subscribe, update } = writable(getFromStorage());
 
   return {
     subscribe,
     addUserInput: (userInput: string) =>
       update((currentWorkspace) => {
         const updatedWorkspace = addUserInput(userInput, currentWorkspace);
-        return assignEvaluations(updatedWorkspace);
+        return evaluateAndPersist(updatedWorkspace);
       }),
 
     replaceByUserInput: (userInput: string, identifier: string) =>
       update((currentWorkspace: Workspace) => {
         currentWorkspace.delete(identifier);
         const updatedWorkspace = addUserInput(userInput, currentWorkspace);
-        return assignEvaluations(updatedWorkspace);
+        return evaluateAndPersist(updatedWorkspace);
       }),
 
     remove: (identifier: Identifier) =>
       update((currentWorkspace) => {
         currentWorkspace.delete(identifier);
-        return assignEvaluations(currentWorkspace);
+        return evaluateAndPersist(currentWorkspace);
       }),
-    reset: () => set(getEmptyWorkspace()),
+
+    reset: () => set(evaluateAndPersist(getEmptyWorkspace())),
   };
+}
+
+function evaluateAndPersist(workspace: Workspace): Workspace {
+  const withEvaluations = assignEvaluations(workspace);
+  saveToStorage(withEvaluations);
+  return withEvaluations;
 }
 
 function addUserInput(
