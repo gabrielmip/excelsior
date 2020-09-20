@@ -1,47 +1,64 @@
-import { writable, derived } from "svelte/store";
+import { writable } from "svelte/store";
 import type { Expression, Identifier } from "../logic/parser";
-import { buildScope } from "../logic/scopeCalculator";
+import { parseUserInput, getDefaultExpression } from "../logic/parser";
+import { assignEvaluations } from "../logic/scopeCalculator";
 
-function createExpressions() {
-  const emptyExpressions: Expression[] = [];
-  const { set, subscribe, update } = writable(emptyExpressions);
+export interface WorkspaceItem {
+  expression: Expression;
+  evaluation?: number;
+}
+
+export type Workspace = Map<Identifier, WorkspaceItem>;
+
+function createWorkspace() {
+  const getEmptyWorkspace = () => new Map<Identifier, WorkspaceItem>();
+  const { set, subscribe, update } = writable(getEmptyWorkspace());
 
   return {
     subscribe,
-    add: (expression: Expression) =>
-      update((currentExpressions) =>
-        sortExpressions(addOrReplace(expression, currentExpressions))
-      ),
-    remove: (symbol: Identifier) =>
-      update((currentExpressions) =>
-        excludeExpression(symbol, currentExpressions)
-      ),
-    reset: () => set([]),
+    addUserInput: (userInput: string) =>
+      update((currentWorkspace) => {
+        const updatedWorkspace = addUserInput(userInput, currentWorkspace);
+        return assignEvaluations(updatedWorkspace);
+      }),
+
+    replaceByUserInput: (userInput: string, identifier: string) =>
+      update((currentWorkspace: Workspace) => {
+        currentWorkspace.delete(identifier);
+        const updatedWorkspace = addUserInput(userInput, currentWorkspace);
+        return assignEvaluations(updatedWorkspace);
+      }),
+
+    remove: (identifier: Identifier) =>
+      update((currentWorkspace) => {
+        currentWorkspace.delete(identifier);
+        return assignEvaluations(currentWorkspace);
+      }),
+    reset: () => set(getEmptyWorkspace()),
   };
 }
 
-function addOrReplace(
-  newExpression: Expression,
-  expressions: Expression[]
-): Expression[] {
-  return excludeExpression(newExpression.identifier, expressions).concat([
-    newExpression,
-  ]);
+function addUserInput(
+  userInput: string,
+  currentWorkspace: Workspace
+): Workspace {
+  const parsingResult = parseUserInput(userInput);
+
+  if (parsingResult.hasError === false) {
+    currentWorkspace.set(parsingResult.result.identifier, {
+      expression: parsingResult.result,
+    });
+
+    const uninstantiated = parsingResult.result.dependencies
+      .filter((dep) => !currentWorkspace.has(dep))
+      .map(getDefaultExpression);
+
+    for (const expression of uninstantiated) {
+      currentWorkspace.set(expression.identifier, { expression });
+    }
+  }
+
+  return currentWorkspace;
 }
 
-const excludeExpression = (
-  identifierToExclude: Identifier,
-  expressions: Expression[]
-) => expressions.filter(({ identifier }) => identifier !== identifierToExclude);
-
-const sortExpressions = (expressions: Expression[]) =>
-  expressions.sort((leftExp, rightExp) =>
-    leftExp.identifier.localeCompare(rightExp.identifier)
-  );
-
-export const expressionStore = createExpressions();
-
-export const scopeStore = derived(
-  expressionStore,
-  (expressions: Expression[]) => buildScope(expressions)
-);
+export const workspaceStore = createWorkspace();
