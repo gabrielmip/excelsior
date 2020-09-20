@@ -5,15 +5,27 @@
 </script>
 
 <style>
-  main {
+  #main {
     margin: 0 auto;
-    padding: 10px;
-    max-width: 1000px;
+    padding: 0;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    max-height: 99vh;
+  }
+
+  #workspace-container {
+    margin-top: 30px;
+    overflow-y: auto;
+    flex: 1;
   }
 </style>
 
-<main>
+<div id="main">
   <Header />
-  <ExpressionParser />
-  <Workspace />
-</main>
+  <ExpressionParser clearOnFinish={true} />
+  <div id="workspace-container">
+    <Workspace />
+  </div>
+
+</div>
