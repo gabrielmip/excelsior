@@ -3,33 +3,81 @@
   import ExpressionParser from "./components/ExpressionParser.svelte";
   import Workspace from "./components/Workspace.svelte";
   import Navigation from "./components/Navigation.svelte";
+  import ActionButtons from "./components/ActionButtons.svelte";
 </script>
 
 <style>
-  main {
+  .main {
+    display: grid;
+    grid-gap: 20px 60px;
+    grid-template-columns: 2fr 7fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+      ".          header"
+      ".          parser"
+      ".          actionButtons"
+      "navigation workspace";
+
     margin: 0 auto;
-    padding: 0;
-    max-width: 700px;
-    display: flex;
-    flex-direction: column;
+    padding: 0 20px;
     max-height: 99vh;
+    max-width: 900px;
   }
 
-  #workspace-container {
-    margin-top: 30px;
+  @media (max-width: 550px) {
+    .main {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto;
+      grid-template-areas:
+        "header"
+        "parser"
+        "actionButtons"
+        "workspace";
+    }
+
+    .navigation {
+      display: none;
+    }
+  }
+
+  .header {
+    grid-area: header;
+  }
+
+  .parser {
+    grid-area: parser;
+  }
+
+  .navigation {
+    grid-area: navigation;
+  }
+
+  .action-buttons {
+    grid-area: actionButtons;
+    min-height: 41px;
+  }
+
+  .workspace {
+    grid-area: workspace;
     overflow-y: auto;
     flex: 1;
   }
 </style>
 
-<main>
-  <Header />
-  <ExpressionParser clearOnFinish={true} />
-  <div id="navigation">
+<div class="main">
+  <div class="header">
+    <Header />
+  </div>
+  <div class="parser">
+    <ExpressionParser clearOnFinish={true} />
+  </div>
+  <div class="action-buttons">
+    <ActionButtons />
+  </div>
+  <div class="navigation">
     <Navigation />
   </div>
-  <div id="workspace-container">
+  <div class="workspace">
     <Workspace />
   </div>
-
-</main>
+</div>

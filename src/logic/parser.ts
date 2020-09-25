@@ -40,7 +40,7 @@ export function parseUserInput(rawInput: string): UserInputResult {
   if (!parsed.isAssignmentNode) {
     return {
       hasError: true,
-      message: "O que você inseriu não é uma definição.",
+      message: "O que você inseriu não é uma definição de símbolo. Definições devem possuir um literal, um sinal de igual (=) e uma fórmula do lado direito.",
     };
   }
 

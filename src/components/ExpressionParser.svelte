@@ -81,6 +81,7 @@
 <div class="container">
   <input
     type="text"
+    placeholder="Entre com uma fórmula. Ex: A = B + C"
     bind:value={rawInput}
     on:keypress={parseIfIsEnter}
     class:unsaved={unsavedEdition} />

@@ -9,16 +9,8 @@
 </script>
 
 <style>
-  .actions {
-    margin-bottom: 20px;
-  }
-</style>
 
-{#if $workspaceStore.size > 0}
-  <div class="actions">
-    <button on:click={workspaceStore.reset}>Limpar tudo</button>
-  </div>
-{/if}
+</style>
 
 <div>
   {#each workspaceItems as item (item.expression.identifier)}

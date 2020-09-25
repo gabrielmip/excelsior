@@ -26,10 +26,26 @@
 </script>
 
 <style>
+  h2 {
+    margin-top: 0px;
+  }
 
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  li {
+    margin-bottom: 5px;
+  }
+
+  input {
+    width: 100%;
+  }
 </style>
 
 <nav>
+  <h2>Seus símbolos</h2>
 
   {#if workspaceItems.length > 0}
     <input type="text" bind:value={searchInput} placeholder="Buscar" />
@@ -37,7 +53,7 @@
 
   <p>
     {#if workspaceItems.length === 0}
-      As expressões que você definir serão listadas aqui.
+      Os símbolos que você definir serão listados aqui.
     {/if}
   </p>
 
@@ -47,7 +63,7 @@
         <a href={'#' + item.expression.identifier}>
           {item.expression.identifier}
         </a>
-        {#if item.evaluation !== undefined}{item.evaluation}{:else}Alô, alô{/if}
+        {#if item.evaluation !== undefined}= {item.evaluation}{/if}
       </li>
     {/each}
   </ul>

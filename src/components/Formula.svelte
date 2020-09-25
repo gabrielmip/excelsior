@@ -33,7 +33,7 @@
   }
 
   button {
-    padding: 3px 8px 5px;
+    padding: 2px 8px 5px;
     background-color: white;
     border: 0;
     color: tomato;
