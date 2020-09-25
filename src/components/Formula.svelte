@@ -44,7 +44,7 @@
 
   button:hover,
   button:focus {
-    background-color: lightpink;
+    background-color: #f6dbdf;
   }
 </style>
 
