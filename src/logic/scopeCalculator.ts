@@ -1,4 +1,3 @@
-import type { Expression } from "./parser";
 import type { Workspace, WorkspaceItem } from "../components/stores";
 
 type Scope = {

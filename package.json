@@ -15,6 +15,7 @@
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-svelte3": "^2.7.3",
@@ -39,9 +40,6 @@
     "dev": "webpack-dev-server"
   },
   "dependencies": {
-    "chart.js": "^2.9.3",
-    "chartjs-plugin-colorschemes": "^0.4.0",
-    "mathjs": "^7.1.0",
-    "roughjs": "^4.3.1"
+    "mathjs": "^7.1.0"
   }
 }

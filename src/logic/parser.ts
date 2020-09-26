@@ -1,6 +1,6 @@
 import { parse, MathNode } from "mathjs";
 
-export type Symbol = string; // TODO: make it non-empty string only
+export type Literal = string; // TODO: make it non-empty string only
 
 export type Expression = Assignment;
 // export type Expression = Evaluable | Assignment;
@@ -8,7 +8,7 @@ export type Expression = Assignment;
 export type Identifier = string; // TODO: make it non-empty string only
 
 interface BaseExpression {
-  dependencies: Symbol[];
+  dependencies: Literal[];
   tree: MathNode;
   stringified: string;
   identifier: Identifier;
@@ -20,7 +20,7 @@ export interface Evaluable extends BaseExpression {
 
 export interface Assignment extends BaseExpression {
   isAssignment: true;
-  symbol: Symbol;
+  literal: Literal;
   rightHandSide: string;
 }
 
@@ -61,10 +61,10 @@ export function parseUserInput(rawInput: string): UserInputResult {
 
 export function getUninstantiatedFromExpression(
   expression: Expression,
-  alreadyDefined: Symbol[]
+  alreadyDefined: Literal[]
 ): Expression[] {
   const deps = expression.dependencies
-    .filter((symbol: string) => !(symbol in alreadyDefined))
+    .filter((literal: string) => !(literal in alreadyDefined))
     .map(getDefaultExpression);
 
   return expression.identifier in alreadyDefined || !expression.isAssignment
@@ -72,19 +72,19 @@ export function getUninstantiatedFromExpression(
     : [expression, ...deps];
 }
 
-export function getDefaultExpression(symbol: Symbol): Expression {
+export function getDefaultExpression(literal: Literal): Expression {
   const defaultAttributedValue = 0;
-  return buildAssignment(parse(`${symbol} = ${defaultAttributedValue}`));
+  return buildAssignment(parse(`${literal} = ${defaultAttributedValue}`));
 }
 
 function buildAssignment(parsed: MathNode): Assignment {
-  const symbols = getSymbolNames(parsed);
-  const [createdSymbol, ...dependencies] = symbols;
+  const literals = getLiteralNames(parsed);
+  const [createdLiteral, ...dependencies] = literals;
 
   return {
-    identifier: createdSymbol,
+    identifier: createdLiteral,
     isAssignment: true,
-    symbol: createdSymbol,
+    literal: createdLiteral,
     dependencies,
     rightHandSide: parsed.value.toString(),
     stringified: parsed.toString(),
@@ -92,20 +92,7 @@ function buildAssignment(parsed: MathNode): Assignment {
   };
 }
 
-function buildEvaluable(parsed: MathNode): Evaluable {
-  const dependencies = getSymbolNames(parsed);
-  const stringified = parsed.toString();
-
-  return {
-    identifier: stringified,
-    isAssignment: false,
-    dependencies,
-    stringified,
-    tree: parsed,
-  };
-}
-
-function getSymbolNames(parsed: MathNode): Symbol[] {
+function getLiteralNames(parsed: MathNode): Literal[] {
   return parsed
     .filter(({ isSymbolNode }: MathNode) => isSymbolNode)
     .map(({ name }) => name);

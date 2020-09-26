@@ -3,7 +3,13 @@ module.exports = {
     browser: true,
     es2020: true,
   },
-  extends: ["eslint:recommended", "google"],
+  extends: [
+    "eslint:recommended",
+    "google",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint",
+  ],
   overrides: [
     {
       files: ["**/*.svelte"],
@@ -17,7 +23,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "svelte3", "prettier"],
   rules: {
-    "max-len": ["error", { code: 100 }],
-    "require-jsdoc": ["off"],
+    "max-len": "off",
+    "require-jsdoc": "off",
   },
 };

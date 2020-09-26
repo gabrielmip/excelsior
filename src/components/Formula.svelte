@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Expression, Symbol } from "../logic/parser";
+  import type { Literal } from "../logic/parser";
   import { workspaceStore } from "./stores";
   import type { WorkspaceItem } from "./stores";
   import ExpressionParser from "./ExpressionParser.svelte";
@@ -9,7 +9,7 @@
   let missingDependencies: string;
 
   $: missingDependencies = wsItem.expression.dependencies
-    .filter((dep: Symbol) => !$workspaceStore.has(dep))
+    .filter((dep: Literal) => !$workspaceStore.has(dep))
     .join(", ");
 </script>
 
