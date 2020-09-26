@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: Barlow-Light
+font link: https://fonts.google.com/specimen/Barlow
+font author: Jeremy Tribby
+font author site: https://tribby.com/
+Slogan Font: Questrial-Regular.otf
+
+icon designer: dan lowenstein
+icon designer link: /danny_mustache
+        
+{"bg":"transparent","icon-gradient-0":"#4B279B","icon-gradient-1":"#DF99D8","font":"#000000","slogan":"#141414"}
+      

@@ -55,6 +55,7 @@ input[type="range"] {
 
 button {
   background-color: #f4f4f4;
+  cursor: pointer;
   outline: none;
 }
 
