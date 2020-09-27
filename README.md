@@ -31,7 +31,7 @@ This is on alpha but it is definitely usable, although the current user experien
 - Draw formulas instead of rendering them as text allowing interactions such as hovering in a literal and highlighting all of their occurrences in the workspace.
 - Restriction definition. For instance, define that my monthly expenses must be smaller than 90% of my salary. This can serve as validation or guides to maximize/minimize variables (linear programming).
 - Excel export
-- Literals which vary over time. This feature
+- Literals which vary over time. This feature is useful for, for example, visualizing compound interests.
 
 ## Development
 
