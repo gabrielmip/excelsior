@@ -6,3 +6,13 @@ const app = new App({
 });
 
 export default app;
+
+// @ts-ignore
+if (import.meta.hot) {
+  // @ts-ignore
+  import.meta.hot.accept();
+  // @ts-ignore
+  import.meta.hot.dispose(() => {
+    app.$destroy();
+  });
+}

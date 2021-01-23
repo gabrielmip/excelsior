@@ -8,7 +8,6 @@ export function getFromStorage(): Map<Identifier, WorkspaceItem> {
     fromStorage = JSON.parse(localStorage.getItem(WORKSPACE_KEY));
   } catch (_) {} // eslint-disable-line no-empty
 
-
   const spaceAsObject = fromStorage ?? {};
 
   return new Map<Identifier, WorkspaceItem>(Object.entries(spaceAsObject));

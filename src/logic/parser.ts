@@ -3,7 +3,6 @@ import { parse, MathNode } from "mathjs";
 export type Literal = string; // TODO: make it non-empty string only
 
 export type Expression = Assignment;
-// export type Expression = Evaluable | Assignment;
 
 export type Identifier = string; // TODO: make it non-empty string only
 
