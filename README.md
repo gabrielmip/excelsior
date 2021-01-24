@@ -11,10 +11,6 @@ Another big goal with Excelsior is to empower users which want to perform math-d
 1. are not skilled in applications commonly used to experiment with their hypothesis or
 2. considered the apparent learning curve for those applications and are not willing to invest time into them.
 
-## Preview
-
-![Screenshot of Excelsior](docs/assets/screenshot.png)
-
 ## Current status
 
 This is on alpha but it is definitely usable, although the current user experience has plenty of room for improvements.
