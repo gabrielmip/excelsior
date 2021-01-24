@@ -13,12 +13,8 @@
     .join(", ");
 </script>
 
-<style>
-  .container {
-    margin-bottom: 15px;
-    display: flex;
-  }
 
+<style>
   .expression-holder {
     flex: 1;
   }
@@ -48,23 +44,21 @@
   }
 </style>
 
-<div class="container" id={wsItem.expression.identifier}>
-  <div class="expression-holder">
-    <ExpressionParser current={wsItem.expression} />
+<div class="expression-holder">
+  <ExpressionParser current={wsItem.expression} />
 
-    <div class="result">
-      {#if wsItem.evaluation !== undefined}
-        {wsItem.evaluation}
-      {:else}Dependências faltantes: {missingDependencies}{/if}
-    </div>
-
+  <div class="result">
+    {#if wsItem.evaluation !== undefined}
+      {wsItem.evaluation}
+    {:else}Dependências faltantes: {missingDependencies}{/if}
   </div>
 
-  <div class="actions">
-    <button
-      title="Deletar"
-      on:click={() => expressionStore.remove(wsItem.expression)}>
-      x
-    </button>
-  </div>
+</div>
+
+<div class="actions">
+  <button
+    title="Deletar"
+    on:click={() => expressionStore.remove(wsItem.expression)}>
+    x
+  </button>
 </div>

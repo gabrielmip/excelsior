@@ -51,7 +51,6 @@ export function getErrorsFromParsing(rawInput: string): number[] {
         if (parsed === null) return false;
 
         const {literal} = getLiteralNames(parsed);
-        console.log(literal);
         return !parsed.isAssignmentNode || !literal;
       }
     }
