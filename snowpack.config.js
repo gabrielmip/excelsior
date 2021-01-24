@@ -10,4 +10,9 @@ module.exports = {
     /* ... */
     '@snowpack/plugin-svelte', '@snowpack/plugin-dotenv', '@snowpack/plugin-typescript'
   ],
+  optimize: {
+    "bundle": true,
+    "minify": true,
+    "target": 'es2017'
+  }
 };
