@@ -1,6 +1,6 @@
 <script lang="ts">
   import { flip } from 'svelte/animate';
-  import { quintOut } from 'svelte/easing';
+  import { quintInOut } from 'svelte/easing';
 	import { crossfade } from 'svelte/transition';
 
   import { expressionStore } from "../components/stores";
@@ -12,7 +12,7 @@
   $: workspaceItems = getSortedItems($expressionStore.values());
 
 	const [send, receive] = crossfade({
-		duration: d => Math.sqrt(d * 100),
+		duration: d => Math.sqrt(d * 200),
 
 		fallback(node, params) {
 			const style = getComputedStyle(node);
@@ -20,7 +20,7 @@
 
 			return {
 				duration: 200,
-				easing: quintOut,
+				easing: quintInOut,
 				css: t => `
 					transform: ${transform} scale(${t});
 					opacity: ${t}

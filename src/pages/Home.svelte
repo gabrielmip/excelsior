@@ -11,7 +11,7 @@
    display: grid;
     grid-gap: 20px 60px;
     grid-template-columns: 2fr 7fr;
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: min-content min-content min-content auto;
     grid-template-areas:
       ".          header"
       ".          parser"
@@ -20,7 +20,7 @@
 
     margin: 0 auto;
     padding: 0 20px;
-    max-height: 99vh;
+    height: 99vh;
     max-width: 900px;
   }
 
