@@ -1,8 +1,9 @@
 <script lang="ts">
-  import type { Literal } from "../services/parseUserInput";
   import { expressionStore } from "./stores";
+  import type { Literal } from "../services/parseUserInput";
   import type { WorkspaceItem } from "./stores";
   import ExpressionParser from "./ExpressionParser.svelte";
+  import LocalizedExpression from "./LocalizedExpression.svelte";
 
   export let wsItem: WorkspaceItem;
 
@@ -49,7 +50,7 @@
 
   <div class="result">
     {#if wsItem.evaluation !== undefined}
-      {wsItem.evaluation}
+      <LocalizedExpression stringified={wsItem.evaluation.toString()} />
     {:else}Dependências faltantes: {missingDependencies}{/if}
   </div>
 

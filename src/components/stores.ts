@@ -11,6 +11,15 @@ interface WorkspaceItem {
 
 type Workspace = Map<Identifier, WorkspaceItem>;
 
+type Separator = '.' | ',';
+type Locale = 'pt' | 'en';
+
+interface UserConfig {
+  thousandSeparator: Separator;
+  decimalSeparator: Separator;
+  locale: Locale;
+}
+
 function createExpressionStore() {
   const getEmptyStore = () => new Map<Identifier, WorkspaceItem>();
   const { set, subscribe, update } = writable(getEmptyStore());
@@ -28,5 +37,16 @@ function createExpressionStore() {
   };
 }
 
+function createUserStore () {
+  const initialValue: UserConfig = {
+    thousandSeparator: '.',
+    decimalSeparator: ',',
+    locale: 'pt'
+  };
+
+  return writable(initialValue);
+}
+
 export const expressionStore = createExpressionStore();
-export type { WorkspaceItem, Workspace };
+export const userStore = createUserStore();
+export type { WorkspaceItem, Workspace, UserConfig, Separator };

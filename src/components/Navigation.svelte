@@ -1,6 +1,7 @@
 <script lang="ts">
   import { expressionStore } from "./stores";
   import type { WorkspaceItem } from "./stores";
+  import LocalizedExpression from "./LocalizedExpression.svelte";
 
   let searchInput: string = "";
   let workspaceItems: WorkspaceItem[];
@@ -67,7 +68,11 @@
       <a href={'#' + item.expression.identifier}>
         {item.expression.identifier}
       </a>
-      {#if item.evaluation !== undefined}= {item.evaluation}{/if}
+
+      {#if item.evaluation !== undefined}
+        =
+        <LocalizedExpression stringified={item.evaluation.toString()} />
+      {/if}
     </li>
   {/each}
 </ul>

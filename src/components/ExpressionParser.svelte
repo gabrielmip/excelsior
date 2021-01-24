@@ -1,21 +1,22 @@
 <script lang="ts">
-  import { expressionStore } from "./stores";
+  import { expressionStore, userStore } from "./stores";
   import { errorCodes } from "../services/parsingErrors";
   import { parseUserInput, getErrorsFromParsing } from "../services/parseUserInput";
+  import { removeLocalization, addLocalization } from "../services/localizeExpressions";
   import type { Expression } from "../services/parseUserInput";
 
   export let clearOnFinish: boolean = false;
   export let current: Expression;
 
-  let rawInput = current ? current.stringified : "";
+  let rawInput = current ? addLocalization(current.stringified, $userStore) : "";
   let unsaved: boolean = false;
   let lastStringified = rawInput;
   let error = "";
 
   $: {
     if (!unsaved && current && current.stringified !== lastStringified) {
-      rawInput = current.stringified;
-      lastStringified = current.stringified;
+      rawInput = addLocalization(current.stringified, $userStore);
+      lastStringified = rawInput;
     }
   }
 
@@ -31,15 +32,17 @@
       return;
     }
 
+    const strippedLocalization = removeLocalization(trimmedInput, $userStore);
+
     error = '';
-    const codes = getErrorsFromParsing(trimmedInput);
+    const codes = getErrorsFromParsing(strippedLocalization);
     if (codes.length > 0) {
       // TODO: Flash input to show error
       error = codes.map(errorCodeToMessage).join();
       return;
     }
 
-    const parsedResult = parseUserInput(trimmedInput);
+    const parsedResult = parseUserInput(strippedLocalization);
 
     expressionStore.addOrUpdate(parsedResult);
 

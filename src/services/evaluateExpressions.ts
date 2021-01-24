@@ -37,8 +37,8 @@ function traverseFromExpression(
 
     let evaluation;
     try {
-      const tree = parse(expression.stringified);
-      evaluation = tree.evaluate(buildScope(currentWorkspace));
+      evaluation = parse(expression.stringified)
+        .evaluate(buildScope(currentWorkspace));
     } catch (error) {
       console.warn(error);
     }
