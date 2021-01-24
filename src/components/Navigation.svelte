@@ -19,9 +19,14 @@
     );
   }
 
+  function sortItems (items: WorkspaceItem[]) {
+    items.sort((left, right) => left.position - right.position);
+    return items;
+  }
+
   $: {
     workspaceItems = [...$expressionStore.values()];
-    filtered = filterWorkspaceItems(workspaceItems, searchInput);
+    filtered = sortItems(filterWorkspaceItems(workspaceItems, searchInput));
   }
 </script>
 
