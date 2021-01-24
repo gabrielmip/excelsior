@@ -1,14 +1,14 @@
 <script lang="ts">
-  import Header from "./components/Header.svelte";
-  import ExpressionParser from "./components/ExpressionParser.svelte";
-  import Workspace from "./components/Workspace.svelte";
-  import Navigation from "./components/Navigation.svelte";
-  import ActionButtons from "./components/ActionButtons.svelte";
+  import Header from "../components/Header.svelte";
+  import ExpressionParser from "../components/ExpressionParser.svelte";
+  import Workspace from "../components/Workspace.svelte";
+  import Navigation from "../components/Navigation.svelte";
+  import ActionButtons from "../components/ActionButtons.svelte";
 </script>
 
 <style>
-  .main {
-    display: grid;
+  main {
+   display: grid;
     grid-gap: 20px 60px;
     grid-template-columns: 2fr 7fr;
     grid-template-rows: auto auto auto auto;
@@ -25,7 +25,7 @@
   }
 
   @media (max-width: 550px) {
-    .main {
+    main {
       grid-template-columns: 1fr;
       grid-template-rows: auto auto auto auto;
       grid-template-areas:
@@ -64,13 +64,13 @@
   }
 </style>
 
-<div class="main">
-  <div class="header">
+<main>
+  <header class="header">
     <Header />
-  </div>
-  <div class="parser">
+  </header>
+  <nav class="parser">
     <ExpressionParser clearOnFinish={true} />
-  </div>
+  </nav>
   <div class="action-buttons">
     <ActionButtons />
   </div>
@@ -80,4 +80,4 @@
   <div class="workspace">
     <Workspace />
   </div>
-</div>
+</main>

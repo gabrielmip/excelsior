@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { workspaceStore } from "./stores";
+  import { expressionStore } from "./stores";
 </script>
 
-{#if $workspaceStore.size > 0}
-  <button on:click={workspaceStore.reset}>Limpar tudo</button>
+{#if $expressionStore.size > 0}
+  <button on:click={expressionStore.reset}>Limpar tudo</button>
 {/if}

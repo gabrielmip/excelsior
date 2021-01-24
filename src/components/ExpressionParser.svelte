@@ -1,18 +1,19 @@
 <script lang="ts">
-  import { workspaceStore } from "./stores";
-  import { parseUserInput } from "../logic/parser";
-  import type { Expression } from "../logic/parser";
+  import { expressionStore } from "./stores";
+  import { errorCodes } from "../services/parsingErrors";
+  import { parseUserInput, getErrorsFromParsing } from "../services/parseUserInput";
+  import type { Expression } from "../services/parseUserInput";
 
   export let clearOnFinish: boolean = false;
   export let current: Expression;
 
   let rawInput = current ? current.stringified : "";
-  let unsavedEdition: boolean = false;
+  let unsaved: boolean = false;
   let lastStringified = rawInput;
   let error = "";
 
   $: {
-    if (!unsavedEdition && current && current.stringified !== lastStringified) {
+    if (!unsaved && current && current.stringified !== lastStringified) {
       rawInput = current.stringified;
       lastStringified = current.stringified;
     }
@@ -23,34 +24,42 @@
     const trimmedInput = rawInput.trim();
 
     if (current) {
-      unsavedEdition = true;
+      unsaved = true;
     }
 
     if (code !== "Enter" || trimmedInput.length === 0) {
       return;
     }
 
-    error = "";
-    const parsedResult = parseUserInput(trimmedInput);
-
-    if (parsedResult.hasError === true) {
+    error = '';
+    const codes = getErrorsFromParsing(trimmedInput);
+    if (codes.length > 0) {
       // TODO: Flash input to show error
-      error = parsedResult.message;
+      error = codes.map(errorCodeToMessage).join();
       return;
     }
 
-    if (current && current.identifier !== parsedResult.result.identifier) {
-      workspaceStore.replaceByUserInput(trimmedInput, current.identifier);
-    } else {
-      workspaceStore.addUserInput(trimmedInput);
-    }
+    const parsedResult = parseUserInput(trimmedInput);
 
-    unsavedEdition = false;
+    expressionStore.addOrUpdate(parsedResult);
+
+    unsaved = false;
 
     if (clearOnFinish) {
       rawInput = "";
     }
   }
+
+  function errorCodeToMessage (code: number) {
+    const messageByCode = {
+      [errorCodes.dependsOnItself]: 'O literal depende dele mesmo',
+      [errorCodes.invalidExpression]: 'Expressão inválida',
+      [errorCodes.isNotAssignment]: 'A expressão precisa ser uma definição de símbolo, como em "A = 10"',
+    };
+
+    return messageByCode[code];
+  }
+
 </script>
 
 <style>
@@ -84,7 +93,7 @@
     placeholder="Insira uma fórmula. Ex: A = B + C"
     bind:value={rawInput}
     on:keypress={parseIfIsEnter}
-    class:unsaved={unsavedEdition} />
+    class:unsaved />
 
   <small class="error">{error}</small>
 </div>

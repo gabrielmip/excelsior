@@ -1,3 +1,4 @@
+import { parse } from "mathjs";
 import type { Workspace, WorkspaceItem } from "../components/stores";
 
 type Scope = {
@@ -32,24 +33,25 @@ function traverseFromExpression(
   );
 
   if (dependenciesSatisfied) {
-    const {
-      expression: { identifier, tree },
-    } = workspaceItem;
+    const { expression } = workspaceItem;
 
     let evaluation;
     try {
+      const tree = parse(expression.stringified);
       evaluation = tree.evaluate(buildScope(currentWorkspace));
     } catch (error) {
       console.warn(error);
     }
 
-    currentWorkspace.set(identifier, {
+    currentWorkspace.set(expression.identifier, {
       ...workspaceItem,
       ...(evaluation !== undefined ? { evaluation } : {}),
     });
   } else {
-    const { expression } = workspaceItem;
-    currentWorkspace.set(expression.identifier, { expression });
+    currentWorkspace.set(workspaceItem.expression.identifier, {
+      ...workspaceItem,
+      evaluation: undefined
+    });
   }
 
   return currentWorkspace;

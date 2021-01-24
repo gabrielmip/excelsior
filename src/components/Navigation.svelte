@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { workspaceStore } from "./stores";
+  import { expressionStore } from "./stores";
   import type { WorkspaceItem } from "./stores";
 
   let searchInput: string = "";
@@ -9,7 +9,7 @@
   function filterWorkspaceItems(
     items: WorkspaceItem[],
     search: string
-  ): WorkspaceItem[] {
+  ) {
     if (search.trim().length === 0) {
       return items;
     }
@@ -20,7 +20,7 @@
   }
 
   $: {
-    workspaceItems = [...$workspaceStore.values()];
+    workspaceItems = [...$expressionStore.values()];
     filtered = filterWorkspaceItems(workspaceItems, searchInput);
   }
 </script>
@@ -44,31 +44,29 @@
   }
 </style>
 
-<nav>
-  <h2>Seus símbolos</h2>
+<h2>Seus símbolos</h2>
 
-  {#if workspaceItems.length > 0}
-    <input type="text" bind:value={searchInput} placeholder="Buscar" />
+{#if workspaceItems.length > 0}
+  <input type="text" bind:value={searchInput} placeholder="Buscar" />
+{/if}
+
+<p>
+  {#if workspaceItems.length === 0}
+    Os símbolos que você definir serão listados aqui.
   {/if}
+</p>
 
-  <p>
-    {#if workspaceItems.length === 0}
-      Os símbolos que você definir serão listados aqui.
-    {/if}
-  </p>
+<ul>
+  {#each filtered as item}
+    <li>
+      <a href={'#' + item.expression.identifier}>
+        {item.expression.identifier}
+      </a>
+      {#if item.evaluation !== undefined}= {item.evaluation}{/if}
+    </li>
+  {/each}
+</ul>
 
-  <ul>
-    {#each filtered as item}
-      <li>
-        <a href={'#' + item.expression.identifier}>
-          {item.expression.identifier}
-        </a>
-        {#if item.evaluation !== undefined}= {item.evaluation}{/if}
-      </li>
-    {/each}
-  </ul>
-
-  {#if filtered.length === 0 && workspaceItems.length > 0}
-    Nenhum resultado para a busca.
-  {/if}
-</nav>
+{#if filtered.length === 0 && workspaceItems.length > 0}
+  Nenhum resultado para a busca.
+{/if}

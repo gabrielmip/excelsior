@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Literal } from "../logic/parser";
-  import { workspaceStore } from "./stores";
+  import type { Literal } from "../services/parseUserInput";
+  import { expressionStore } from "./stores";
   import type { WorkspaceItem } from "./stores";
   import ExpressionParser from "./ExpressionParser.svelte";
 
@@ -9,7 +9,7 @@
   let missingDependencies: string;
 
   $: missingDependencies = wsItem.expression.dependencies
-    .filter((dep: Literal) => !$workspaceStore.has(dep))
+    .filter((dep: Literal) => !$expressionStore.has(dep))
     .join(", ");
 </script>
 
@@ -63,7 +63,7 @@
   <div class="actions">
     <button
       title="Deletar"
-      on:click={() => workspaceStore.remove(wsItem.expression.identifier)}>
+      on:click={() => expressionStore.remove(wsItem.expression)}>
       x
     </button>
   </div>
