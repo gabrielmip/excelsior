@@ -20,7 +20,7 @@
     }
   }
 
-  function parseIfIsEnter({ code }: KeyboardEvent): void {
+  function parseIfIsEnter({ key }: KeyboardEvent): void {
     // FIXME: mathjs is case-insensitive
     const trimmedInput = rawInput.trim();
 
@@ -28,7 +28,7 @@
       unsaved = true;
     }
 
-    if (code !== "Enter" || trimmedInput.length === 0) {
+    if (key !== "Enter" || trimmedInput.length === 0) {
       return;
     }
 

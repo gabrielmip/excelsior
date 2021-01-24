@@ -2,6 +2,9 @@ import { writable } from "svelte/store";
 import addOrUpdateExpression from "../services/addOrUpdateExpression";
 import deleteExpression from "../services/deleteExpression";
 import type { Expression, Identifier } from "../services/parseUserInput";
+import { persistToLocalStorage, getFromLocalStorage } from "../services/localStoragePersistence";
+
+const WORKSPACE_KEY = 'workspace';
 
 interface WorkspaceItem {
   expression: Expression;
@@ -22,7 +25,7 @@ interface UserConfig {
 
 function createExpressionStore() {
   const getEmptyStore = () => new Map<Identifier, WorkspaceItem>();
-  const { set, subscribe, update } = writable(getEmptyStore());
+  const { set, subscribe, update } = writable(getFromLocalStorage(WORKSPACE_KEY));
 
   return {
     subscribe,
@@ -47,6 +50,8 @@ function createUserStore () {
   return writable(initialValue);
 }
 
+export type { WorkspaceItem, Workspace, UserConfig, Separator };
 export const expressionStore = createExpressionStore();
 export const userStore = createUserStore();
-export type { WorkspaceItem, Workspace, UserConfig, Separator };
+
+expressionStore.subscribe(store => persistToLocalStorage(store, WORKSPACE_KEY));

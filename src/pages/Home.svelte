@@ -27,7 +27,8 @@
   @media (max-width: 550px) {
     main {
       grid-template-columns: 1fr;
-      grid-template-rows: auto auto auto auto;
+      grid-gap: 30px;
+      grid-template-rows: min-content min-content min-content auto;
       grid-template-areas:
         "header"
         "parser"
