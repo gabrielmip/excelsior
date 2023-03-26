@@ -3,16 +3,18 @@
 
 module.exports = {
   mount: {
-    src: '/dist',
-    public: '/',
+    src: "/",
+    public: "/",
   },
   plugins: [
     /* ... */
-    '@snowpack/plugin-svelte', '@snowpack/plugin-dotenv', '@snowpack/plugin-typescript'
+    "@snowpack/plugin-svelte",
+    "@snowpack/plugin-dotenv",
+    "@snowpack/plugin-typescript",
   ],
   optimize: {
-    "bundle": true,
-    "minify": true,
-    "target": 'es2017'
-  }
+    bundle: true,
+    minify: true,
+    target: "es2017",
+  },
 };
