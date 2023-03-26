@@ -3,7 +3,7 @@
 
 module.exports = {
   mount: {
-    src: "/",
+    src: "/dist",
     public: "/",
   },
   plugins: [
@@ -16,5 +16,8 @@ module.exports = {
     bundle: true,
     minify: true,
     target: "es2017",
+  },
+  buildOptions: {
+    baseUrl: "/excelsior",
   },
 };
