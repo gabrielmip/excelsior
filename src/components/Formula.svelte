@@ -14,6 +14,24 @@
     .join(", ");
 </script>
 
+<div class="expression-holder">
+  <ExpressionParser current={wsItem.expression} />
+
+  <div class="result">
+    {#if wsItem.evaluation !== undefined}
+      <LocalizedExpression stringified={wsItem.evaluation.toString()} />
+    {:else}Dependências faltantes: {missingDependencies}{/if}
+  </div>
+</div>
+
+<div class="actions">
+  <button
+    title="Deletar"
+    on:click={() => expressionStore.remove(wsItem.expression)}
+  >
+    x
+  </button>
+</div>
 
 <style>
   .expression-holder {
@@ -26,11 +44,11 @@
   }
 
   .result {
-    margin-top: 5px;
+    margin-top: 4px;
   }
 
   button {
-    padding: 2px 8px 5px;
+    padding: 2px 8px 4px;
     background-color: white;
     border: 0;
     color: tomato;
@@ -44,22 +62,3 @@
     background-color: #f6dbdf;
   }
 </style>
-
-<div class="expression-holder">
-  <ExpressionParser current={wsItem.expression} />
-
-  <div class="result">
-    {#if wsItem.evaluation !== undefined}
-      <LocalizedExpression stringified={wsItem.evaluation.toString()} />
-    {:else}Dependências faltantes: {missingDependencies}{/if}
-  </div>
-
-</div>
-
-<div class="actions">
-  <button
-    title="Deletar"
-    on:click={() => expressionStore.remove(wsItem.expression)}>
-    x
-  </button>
-</div>

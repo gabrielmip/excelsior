@@ -4,18 +4,40 @@
   import Workspace from "../components/Workspace.svelte";
   import Navigation from "../components/Navigation.svelte";
   import ActionButtons from "../components/ActionButtons.svelte";
+  import Chart from "../components/Chart.svelte";
 </script>
+
+<main>
+  <header class="header">
+    <Header />
+  </header>
+  <nav class="parser">
+    <ExpressionParser clearOnFinish={true} />
+  </nav>
+  <div class="action-buttons">
+    <ActionButtons />
+  </div>
+  <div class="navigation">
+    <Navigation />
+  </div>
+  <div class="workspace">
+    <Workspace />
+  </div>
+  <div class="chart">
+    <Chart />
+  </div>
+</main>
 
 <style>
   main {
-   display: grid;
+    display: grid;
     grid-gap: 20px 60px;
     grid-template-columns: 2fr 7fr;
     grid-template-rows: min-content min-content min-content auto;
     grid-template-areas:
-      ".          header"
-      ".          parser"
-      ".          actionButtons"
+      "chart      header"
+      "chart      parser"
+      "chart      actionButtons"
       "navigation workspace";
 
     margin: 0 auto;
@@ -28,17 +50,23 @@
     main {
       grid-template-columns: 1fr;
       grid-gap: 30px;
-      grid-template-rows: min-content min-content min-content auto;
+      grid-template-rows: min-content min-content min-content auto auto;
       grid-template-areas:
         "header"
         "parser"
         "actionButtons"
-        "workspace";
+        "workspace"
+        "chart";
     }
 
     .navigation {
       display: none;
     }
+  }
+
+  .chart {
+    grid-area: chart;
+    align-self: end;
   }
 
   .header {
@@ -61,24 +89,10 @@
   .workspace {
     grid-area: workspace;
     overflow-y: auto;
+    overflow-x: visible;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 </style>
-
-<main>
-  <header class="header">
-    <Header />
-  </header>
-  <nav class="parser">
-    <ExpressionParser clearOnFinish={true} />
-  </nav>
-  <div class="action-buttons">
-    <ActionButtons />
-  </div>
-  <div class="navigation">
-    <Navigation />
-  </div>
-  <div class="workspace">
-    <Workspace />
-  </div>
-</main>

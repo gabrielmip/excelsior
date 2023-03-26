@@ -18,6 +18,8 @@
     "dev": "snowpack dev"
   },
   "dependencies": {
-    "mathjs": "^7.1.0"
+    "chart.js": "^4.2.1",
+    "mathjs": "^7.1.0",
+    "svelte-chartjs": "^3.1.2"
   }
 }
